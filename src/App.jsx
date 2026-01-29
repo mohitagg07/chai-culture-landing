@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Instagram, Twitter, Facebook } from 'lucide-react';
+import { Instagram, Twitter, Facebook, CheckCircle } from 'lucide-react';
 import CornerPattern from './components/CornerPattern';
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle'); // 'idle', 'loading', 'success'
 
   useEffect(() => {
     setLoaded(true);
   }, []);
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // This STOPS the page refresh
+    if (!email) return;
+
+    setStatus('loading');
+
+    // Simulate sending data to a server (1.5 seconds delay)
+    setTimeout(() => {
+      setStatus('success');
+      setEmail('');
+    }, 1500);
+  };
+
   return (
     // BG: Deep Royal Mahogany Gradient
     <div className="min-h-screen bg-[radial-gradient(circle_at_30%_50%,#2b100a_0%,#180806_80%)] text-cream relative flex items-center justify-center overflow-hidden font-body p-4 md:p-6">
       
-      {/* Decorative Corners (Scaled down for mobile) */}
+      {/* Decorative Corners */}
       <CornerPattern className="top-0 left-0 w-16 h-16 md:w-32 md:h-32" />
       <CornerPattern className="top-0 right-0 rotate-90 w-16 h-16 md:w-32 md:h-32" />
       <CornerPattern className="bottom-0 left-0 -rotate-90 w-16 h-16 md:w-32 md:h-32" />
@@ -24,15 +39,14 @@ const App = () => {
         {/* LEFT COLUMN: Text Content */}
         <div className="flex flex-col justify-center items-start text-left pl-2 md:pl-12 space-y-4 md:space-y-6 order-2 md:order-1 relative z-30 pt-10 md:pt-0">
           
-          {/* Logo - Scaled */}
+          {/* Logo */}
           <div className="relative mb-2 md:mb-4">
              <div className="absolute -inset-4 bg-gold-300 blur-2xl opacity-10"></div>
              <img src="/logo.jpeg" alt="Logo" className="relative w-16 h-16 md:w-24 md:h-24 rounded-full border-2 border-gold-300 shadow-2xl object-cover" />
           </div>
 
-          {/* TYPOGRAPHY: Responsive Text Sizes */}
+          {/* TYPOGRAPHY */}
           <div className="leading-[0.9]">
-            {/* Title: 4xl (Mobile) -> 6xl (Laptop) -> 8xl (Desktop) */}
             <h1 className="font-royal text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#faeeb8] via-[#dcb35b] to-[#9e792e] block mb-2 drop-shadow-lg">
               CHAI
             </h1>
@@ -40,13 +54,11 @@ const App = () => {
               CULTURE
             </h1>
             
-            {/* Tagline: Scaled down */}
             <p className="font-script text-2xl sm:text-3xl md:text-4xl text-[#dcb35b] mt-4 md:mt-6 tracking-wide">
               "Brew the Royal Tradition"
             </p>
           </div>
 
-          {/* Description: Smaller readable text */}
           <p className="font-body text-[#f3e5d0]/90 text-base sm:text-lg md:text-2xl leading-relaxed max-w-lg">
             A premium instant chai premix inspired by the royal kitchens of India. 
             Experience heritage, warmth, and elegance in every sip.
@@ -58,18 +70,38 @@ const App = () => {
             </span>
           </div>
 
-          {/* SIGNUP FORM */}
-          <div className="w-full max-w-md pt-4">
-            <form className="flex flex-col sm:flex-row gap-4 items-stretch">
-              <input 
-                type="email" 
-                placeholder="Enter email address" 
-                className="flex-1 bg-[#2b100a]/30 border border-[#9e792e]/40 rounded-sm px-4 py-3 text-[#f3e5d0] placeholder-[#f3e5d0]/30 focus:outline-none focus:border-[#dcb35b] transition font-body text-base md:text-lg"
-              />
-              <button className="bg-[#ffca28] hover:bg-[#ffc107] text-white font-bold font-royal px-8 py-3 rounded-sm shadow-[0_4px_14px_rgba(255,202,40,0.3)] hover:scale-105 transition uppercase tracking-widest text-xs md:text-sm whitespace-nowrap">
-                Notify Me
-              </button>
-            </form>
+          {/* SIGNUP FORM LOGIC */}
+          <div className="w-full max-w-md pt-4 h-24"> {/* Added fixed height to prevent layout jump */}
+            
+            {status === 'success' ? (
+              // SUCCESS MESSAGE
+              <div className="flex items-center gap-3 p-4 border border-[#dcb35b]/30 bg-[#dcb35b]/10 rounded-sm animate-fade-in">
+                <CheckCircle className="text-[#dcb35b] w-6 h-6" />
+                <span className="text-[#dcb35b] font-royal text-lg tracking-wide">
+                  Welcome to the Royal List.
+                </span>
+              </div>
+            ) : (
+              // FORM
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 items-stretch transition-opacity duration-300">
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter email address" 
+                  required
+                  className="flex-1 bg-[#2b100a]/30 border border-[#9e792e]/40 rounded-sm px-4 py-3 text-[#f3e5d0] placeholder-[#f3e5d0]/30 focus:outline-none focus:border-[#dcb35b] transition font-body text-base md:text-lg"
+                />
+                
+                <button 
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className={`bg-[#dcb35b] hover:bg-[#faeeb8] text-[#2b100a] font-bold font-royal px-8 py-3 rounded-sm shadow-[0_4px_14px_rgba(220,179,91,0.3)] hover:scale-105 transition uppercase tracking-widest text-xs md:text-sm whitespace-nowrap ${status === 'loading' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                >
+                  {status === 'loading' ? 'SENDING...' : 'NOTIFY ME'}
+                </button>
+              </form>
+            )}
           </div>
 
           {/* Social Icons */}
@@ -82,7 +114,6 @@ const App = () => {
         </div>
 
         {/* RIGHT COLUMN: The Seamless Blend */}
-        {/* Adjusted Height: 40vh on Mobile, Screen height on Desktop */}
         <div className="relative h-[40vh] md:h-screen w-full order-1 md:order-2 flex items-center justify-end z-10 overflow-hidden">
            
            {/* THE BLEND MASK */}
