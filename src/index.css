@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #2a0a0a;
+  overflow-x: hidden;
+}
+
+/* Custom Utilities for Image Blending */
+.mask-diagonal {
+  mask-image: linear-gradient(135deg, transparent 0%, black 50%, black 100%);
+  -webkit-mask-image: linear-gradient(135deg, transparent 0%, black 50%, black 100%);
+}
+
+.mask-radial {
+  background: radial-gradient(circle, transparent 20%, #0c0202 140%);
+}

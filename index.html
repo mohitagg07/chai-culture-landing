@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chai Culture - Royal Launch</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Pinyon+Script&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -13,25 +13,28 @@
         theme: {
           extend: {
             colors: {
-              royal: '#2a0a0a',  /* Deep Maroon */
-              gold: '#d4af37',   /* Luxury Gold */
-              cream: '#fdf6e3',
+              'royal-dark': '#180806',
+              'royal-brown': '#2b100a',
+              'gold-100': '#faeeb8',
+              'gold-300': '#dcb35b',
+              'gold-500': '#9e792e',
+              'cream': '#f3e5d0',
             },
             fontFamily: {
-              serif: ['Playfair Display', 'serif'],
-              sans: ['Lato', 'sans-serif'],
+              royal: ['Cinzel Decorative', 'serif'], 
+              script: ['Pinyon Script', 'cursive'],
+              body: ['Cormorant Garamond', 'serif'],
+            },
+            backgroundImage: {
+              'royal-vignette': 'radial-gradient(circle at 30% 50%, #2b100a 0%, #180806 100%)',
             }
           }
         }
       }
     </script>
-
     <style>
-      body {
-        background-color: #2a0a0a;
-        margin: 0;
-        overflow-x: hidden; /* This stops the side-scrolling */
-      }
+      body { background-color: #180806; margin: 0; }
+      /* 3D Shadow REMOVED for flat look */
     </style>
   </head>
   <body>
@@ -39,3 +42,4 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
